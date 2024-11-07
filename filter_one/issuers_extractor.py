@@ -1,7 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from bonds_extractor import extract_bond_symbols
+from filter_one.bonds_extractor import extract_bond_symbols
 
 # Constants
 ISSUERS_LIST_URL = 'https://www.mse.mk/en/stats/symbolhistory/ADIN'
