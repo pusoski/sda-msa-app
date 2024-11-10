@@ -10,7 +10,7 @@ ___
 
 ## 1. Functional Requirements:
 
-### 1.1. Data Retrieval and Processing 
+### 1.1. Data Retrieval and Processing:
 
 	FR1: The application shall retrieve daily historical stock data for all listed companies on the Macedonian Stock Exchange. 
 
@@ -18,7 +18,7 @@ ___
 
 	FR3: The data shall include open, close, high, low, and volume for each trading day. 
 
-### 1.2. Data Visualization 
+### 1.2. Data Visualization:
 
 	FR4: The application shall display data in chart format (e.g., line charts, bar charts) to visualize stock performance trends over time. 
 
@@ -26,7 +26,7 @@ ___
 
 	FR6: The application shall support comparison of multiple companies' stock performance within the same chart. 
 
-### 1.3. Analytical Tools 
+### 1.3. Analytical Tools:
 
 	FR7: Users shall be able to generate reports on the performance of selected stocks. 
 
@@ -34,7 +34,7 @@ ___
 
 	FR9: The application shall include basic technical indicators such as moving averages, RSI (Relative Strength Index), and MACD (Moving Average Convergence Divergence). 
 
-### 1.4. User Authentication and Profiles 
+### 1.4. User Authentication and Profiles:
 
 	FR10: Users shall be able to create accounts. 
 
@@ -46,33 +46,33 @@ ___
 
 ## 2. Non-Functional Requirements:
 
-### 2.1. Performance 
+### 2.1. Performance:
 ```
 NFR1: The application shall load stock data and charts within 20 seconds for queries involving up to 3 years of data. 
 
 NFR2: The application should handle concurrent users efficiently and be scalable to accommodate at least 150 simultaneous users. 
    ```
 
-### 2.2 Security
+### 2.2 Security:
 ```
 NFR3: All user data, including preferences and watchlists, shall be encrypted.
    
 NFR4: The application shall comply with GDPR regulations to protect user privacy.
 ```
-### 2.3. Availability 
+### 2.3. Availability:
 
     NFR5: The application shall be available with 99.9% uptime.
 
     NFR6: A mobile-responsive interface is required for use on smartphones and tablets. 
     
-### 2.4. Usability
+### 2.4. Usability:
     
 ```
 NFR7: The interface shall be user-friendly, with intuitive navigation for non-technical users. 
 
 NFR8: Documentation and tutorials shall be available within the app to help users understand the features.
 ```
-### 2.5. Maintainability 
+### 2.5. Maintainability:
 ```
 NFR9: The application shall have modular code for easy maintenance and updating. 
 
