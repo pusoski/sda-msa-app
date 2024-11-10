@@ -8,6 +8,6 @@ ____________
 
 Project for the course Software Design and Architecture at FCSE Skopje.
 The students working on this project:
-1. Hristijan Pusoski 221524
-2. Iskra Stojchevska 221535
-3. Irinej Ilievski 211554
+- Hristijan Pusoski 221524
+- Iskra Stojchevska 221535
+- Irinej Ilievski 211554
