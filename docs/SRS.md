@@ -1,5 +1,5 @@
 # Software Requirements Specification
-___
+
 ## Description:
 The “Macedonian Stock Analyzer” is a comprehensive financial analysis tool designed to empower investors, analysts, and financial enthusiasts with insights into the “Macedonian Stock Exchange” (MSE). This application allows the users to access, analyze, and visualize historical market data for all listed companies over the last decade. It focuses on delivering a user-friendly, data-driven platform for informed investment decision-making. 
 	The application offers a comprehensive platform for investors, analysts, and students to explore and analyze stock data. By offering tools tailored for in-dept stock analysis and trend forecasting, it serves both beginners and seasoned investors seeking to make data-driven decisions in a rapidly evolving market. 
