@@ -24,8 +24,10 @@ cd sda-mse
 docker-compose up --build
 ```
 
-## Note About the Dockerized Application
+## Note About the Dockerized Application - Where to Find the Data...
 
-Once run using Docker / Docker Compose, the application stores the data in a volume for MongoDB, and the data can be accessed using software like DataGrip, or PyCharm's built-in database functionality, without authentication, on port 27017 (see [docker-compose.yml](https://github.com/pusoski/sda-mse/blob/main/docker-compose.yml)).
+Once run using Docker / Docker Compose, the application stores the data in a volume for MongoDB, thus, the data can be accessed using software like JetBrains DataGrip, or PyCharm's built-in database functionalities, without authentication on port 27017 (see [docker-compose.yml](https://github.com/pusoski/sda-mse/blob/main/docker-compose.yml)).
 
 To insert data with unformatted prices (English, original format), in the [Dockerfile](https://github.com/pusoski/sda-mse/blob/main/Dockerfile) change the format argument value to 0 (last line of the file). Otherwise, to use the Macedonian format of the prices, keep the format value argument as it is (--format=1).
+
+If decided to go from --format=1 to --format=0, or vice-versa, please ensure that you have captured the records (exported), and that the Docker image of the app, as well as the database volume are deleted (ensure that you have a clean environment).
