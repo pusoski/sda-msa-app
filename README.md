@@ -23,3 +23,9 @@ cd sda-mse
 ```bash
 docker-compose up --build
 ```
+
+## Note About the Dockerized Application
+
+Once run using Docker / Docker Compose, the application stores the data in a volume for MongoDB, and the data can be accessed using software like DataGrip, or PyCharm's built-in database functionality.
+
+To insert data with unformatted prices (English, original format), in [docker-compose.yml](https://github.com/pusoski/sda-mse/docker-compose.yml), change format to 0 in the last line of the file. Otherwise, to use Macedonian format of the prices, keep the file as it is.
