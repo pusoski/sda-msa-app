@@ -28,4 +28,4 @@ docker-compose up --build
 
 Once run using Docker / Docker Compose, the application stores the data in a volume for MongoDB, and the data can be accessed using software like DataGrip, or PyCharm's built-in database functionality, without authentication, on port 27017 (see [docker-compose.yml](https://github.com/pusoski/sda-mse/blob/main/docker-compose.yml)).
 
-To insert data with unformatted prices (English, original format), in [docker-compose.yml](https://github.com/pusoski/sda-mse/blob/main/docker-compose.yml) change the format argument value to 0 (in the last line of the file). Otherwise, to use the Macedonian format of the prices, keep the file as it is (--format=1).
+To insert data with unformatted prices (English, original format), in the [Dockerfile](https://github.com/pusoski/sda-mse/blob/main/Dockerfile) change the format argument value to 0 (last line of the file). Otherwise, to use the Macedonian format of the prices, keep the format value argument as it is (--format=1).
