@@ -13,33 +13,30 @@ ___
 ### 1.1. Data Retrieval and Processing:
 
 	FR1: The application shall retrieve daily historical stock data for all listed companies on the Macedonian Stock Exchange. 
-
-	FR2: The data shall cover a minimum period of 10 years. 
-
-	FR3: The data shall include open, close, high, low, and volume for each trading day. 
+	FR2: The data shall cover a minimum period of 1 year. 
+ 	FR3: The data shall cover a maximum period of 10 years.
+	FR4: The data shall include information for each trading day.
+ 		FR4.1: The data shall include average trade price for each trading day.
+   		FR4.2: The data shall include volume for each trading day.
+     		FR4.3: The data shall include turnover in BEST in denars for each trading day.
+       		FR4.4: The data shall include total turnover in denars for each trading day.
 
 ### 1.2. Data Visualization:
 
 	FR4: The application shall display data in chart format (e.g., line charts, bar charts) to visualize stock performance trends over time. 
-
 	FR5: Users shall be able to select specific companies and time ranges for customized data views. 
-
 	FR6: The application shall support comparison of multiple companies' stock performance within the same chart. 
 
 ### 1.3. Analytical Tools:
 
 	FR7: Users shall be able to generate reports on the performance of selected stocks. 
-
-	FR8: Users shall be able to download data and charts in various formats (e.g., CSV, PNG). 
-
+	FR8: Users shall be able to download data and charts in various formats (e.g., CSV, PNG).
 	FR9: The application shall include basic technical indicators such as moving averages, RSI (Relative Strength Index), and MACD (Moving Average Convergence Divergence). 
 
 ### 1.4. User Authentication and Profiles:
 
 	FR10: Users shall be able to create accounts. 
-
 	FR11: Users shall be able to save their analysis preferences. 
-
 	FR12: The application shall allow users to set up personalized watchlists for companies of interest. 
 
 ___
@@ -49,33 +46,28 @@ ___
 ### 2.1. Performance:
 ```
 NFR1: The application shall load stock data and charts within 20 seconds for queries involving up to 3 years of data. 
-
 NFR2: The application should handle concurrent users efficiently and be scalable to accommodate at least 150 simultaneous users. 
    ```
 
 ### 2.2 Security:
 ```
 NFR3: All user data, including preferences and watchlists, shall be encrypted.
-   
 NFR4: The application shall comply with GDPR regulations to protect user privacy.
 ```
 ### 2.3. Availability:
 
     NFR5: The application shall be available with 99.9% uptime.
-
     NFR6: A mobile-responsive interface is required for use on smartphones and tablets. 
     
 ### 2.4. Usability:
     
 ```
 NFR7: The interface shall be user-friendly, with intuitive navigation for non-technical users. 
-
 NFR8: Documentation and tutorials shall be available within the app to help users understand the features.
 ```
 ### 2.5. Maintainability:
 ```
 NFR9: The application shall have modular code for easy maintenance and updating. 
-
 NFR10: Regular data backups shall be maintained to ensure data recovery in case of failure. 
  ```
 
@@ -88,17 +80,13 @@ ___
 #### 3.1.1. Investor:
 ```
 - Profile: Bobi is a 54-year-old retail investor with moderate knowledge of stock analysis.
-
 - Goals: Bobi wants to identify trends in Macedonian stocks to make long-term investments.
-
 - Problem: Bobi finds it hard to interpret raw stock data and would benefit from visual tools.
 ```
 #### 3.1.2. Analyst:
 ```
 - Profile: Ana is a 30-year-old financial analyst at a Macedonian investment firm.
-
 - Goals: Ana needs access to historical stock data and technical indicators to generate reports for her clients.
-
 - Problem: Ana requires a tool that saves her analysis preferences and allows her to download data efficiently.
 ```
 #### 3.1.2. Student:
@@ -106,7 +94,6 @@ ___
 - Profile: Stefan is a 22-year-old economics student interested in learning about stock analysis.
 
 - Goals: Stefan wants to explore stock trends and learn about technical indicators in a simple and intuitive way.
-
 - Pain Points: Stefan needs tutorials and documentation within the application to understand its features.
 ```
 
