@@ -14,7 +14,7 @@ The list of issuers (up to 11/14/2024), along with their validity for the purpos
 
 ### Pre-Scraped Data with Macedonian Price Formatting
 
-The scraping of the data **with Macedonian price formatting** took **~ 24.94** minutes (executed on a local machine).
+The scraping of the data **with Macedonian price formatting** took ``24.94 minutes`` (executed on a local machine).
 The scraped data exported from the database is available in [this file](./pre_scraped_data/11-14-2024-MacedonianPriceFormatting.csv).
 
 ![image info](https://i.ibb.co/RS9cSC2/image.png)
