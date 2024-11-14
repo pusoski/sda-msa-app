@@ -12,10 +12,9 @@ year 2024/2025.
 
 ## Homework One
 
-To read the details about the first homework/phase of the project, refer
-to [this README file](./homework_one/README.md).
-The file includes instructions on running the application (homework one), referral to pre-scraped data and Software
-Requirements Specification document.
+### To read the details about the first homework/phase of the project, refer to [this README file](./homework_one/README.md).
+### Visit [this link](https://github.com/pusoski/sda-mse/blob/main/homework_one/README.md#steps-for-running-the-application) for instructions on running the application.
+### Visit [this link](https://github.com/pusoski/sda-mse/blob/main/docs/SRS.md#software-requirements-specification) for Software Requirements Specification.
 
 ## Contributors / Students
 
