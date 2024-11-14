@@ -10,11 +10,11 @@ financial decisions.
 This application is a project for the purposes of the course Software Design and Architecture at FCSE Skopje, academic
 year 2024/2025.
 
-## Homework One
-
-### To read the details about the first homework/phase of the project, refer to [this README file](./homework_one/README.md).
-### Visit [this link](https://github.com/pusoski/sda-mse/blob/main/homework_one/README.md#steps-for-running-the-application) for instructions on running the application.
-### Visit [this link](https://github.com/pusoski/sda-mse/blob/main/docs/SRS.md#software-requirements-specification) for Software Requirements Specification.
+## Access Homework One [Here](./homework_one)
+Quick links:
+1. [Instructions on Running the Application](./homework_one/README.md#steps-for-running-the-application)
+2. [Software Requirements Specification Document](./docs/SRS.md#software-requirements-specification)
+3. [Pre-Scraped Data (up to 11/14/2024)](./homework_one/README.md#pre-scraped-issuerssymbols)
 
 ## Contributors / Students
 
