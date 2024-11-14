@@ -14,7 +14,7 @@ year 2024/2025.
 Quick links:
 1. [Instructions on Running the Application](./homework_one/README.md#steps-for-running-the-application)
 2. [Software Requirements Specification Document](./docs/SRS.md#software-requirements-specification)
-3. [Pre-Scraped Data (up to 11/14/2024)](./homework_one/README.md#pre-scraped-issuerssymbols)
+3. [Pre-Scraped Data (up to 11/14/2024)](./homework_one/pre_scraped_data)
 
 ## Contributors / Students
 
