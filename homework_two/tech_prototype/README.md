@@ -5,7 +5,7 @@ version).
 
 ## Video Recording
 
-A video recording demonstrating the prototype's functionality is available [here](./prototype_video.mp4).
+Due to the size of the original file, the video recording demonstrating the prototype's functionality is available [here](https://finkiukim-my.sharepoint.com/:v:/g/personal/hristijan_pusoski_students_finki_ukim_mk/Ef20IGdAx81DiJ0Ql_itX3IBwrbJ2D4jNFlr23hzHBFLNQ).
 
 ## Steps for Running the Prototype
 

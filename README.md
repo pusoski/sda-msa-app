@@ -20,7 +20,7 @@ Quick links:
 1. [Architectural Designs](./homework_two/architecture/AD.pdf)
 2. [GUI Mockups](./homework_two/mockups)
 3. [Tech Prototype Application](./homework_two/tech_prototype/README.md)
-4. [Tech Prototype Video](./homework_two/tech_prototype/prototype_video.mp4)
+4. [Tech Prototype Video](https://finkiukim-my.sharepoint.com/:v:/g/personal/hristijan_pusoski_students_finki_ukim_mk/Ef20IGdAx81DiJ0Ql_itX3IBwrbJ2D4jNFlr23hzHBFLNQ)
 
 ## Contributors / Students
 
