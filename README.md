@@ -1,4 +1,4 @@
-# Macedonian Stock Analyzer
+# Macedonian Stocks Analyzer
 
 ## Description
 
@@ -12,9 +12,15 @@ year 2024/2025.
 
 ## Access Homework One [Here](./homework_one)
 Quick links:
-1. [Instructions on Running the Application](./homework_one/README.md#steps-for-running-the-application)
+1. [Running the Pipeline Application](./homework_one/README.md#steps-for-running-the-application)
 2. [Software Requirements Specification Document](./docs/SRS.md#software-requirements-specification)
 3. [Pre-Scraped Data (up to 11/14/2024)](./homework_one/pre_scraped_data)
+
+## Access Homework Two [Here](./homework_two)
+1. [Architectural Designs](./homework_two/architecture/AD.pdf)
+2. [GUI Mockups](./homework_two/mockups)
+3. [Tech Prototype Application](./homework_two/tech_prototype/README.md)
+4. [Tech Prototype Video](./homework_two/tech_prototype/prototype_video.mp4)
 
 ## Contributors / Students
 
