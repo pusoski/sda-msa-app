@@ -1,4 +1,4 @@
-from database.setup_database import get_database
+from homework_one.database.setup_database import get_database
 from homework_one.filter_two.filter_two_main import scrape_data_for_issuer, get_last_scraped_date
 
 

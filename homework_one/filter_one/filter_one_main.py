@@ -1,5 +1,5 @@
 from homework_one.filter_one.bonds_extractor import get_bond_symbols
-from database.setup_database import get_database
+from homework_one.database.setup_database import get_database
 from homework_one.filter_one.issuers_dropdown_scraper import scrape_issuers_dropdown
 
 

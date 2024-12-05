@@ -30,8 +30,9 @@ The scraped data exported from the database **with English price formatting** is
 > Requires a Git installation to be present on the system.
 
 ```bash
-git clone https://github.com/pusoski/sda-mse.git
-cd sda-mse
+git clone https://github.com/pusoski/sda-msa-app.git
+
+cd sda-msa-app/homework_one/
 ```
 
 ### 2. Run Through Docker / Docker Compose

@@ -1,4 +1,4 @@
-from database.setup_database import get_database
+from homework_one.database.setup_database import get_database
 import requests
 from bs4 import BeautifulSoup
 from collections import OrderedDict

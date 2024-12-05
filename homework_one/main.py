@@ -2,7 +2,7 @@ import argparse
 import os
 from homework_one.filter_one.filter_one_main import run_filter_one
 from homework_one.filter_three.filter_three_main import run_filter_three
-from database.setup_database import get_database, initialize_collections
+from homework_one.database.setup_database import get_database, initialize_collections
 import time
 from datetime import datetime
 
