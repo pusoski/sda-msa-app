@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    networks:
+      - farm-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - farm-network
+
+  mongo:
+    image: mongo:8.0.3
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - farm-network
+
+networks:
+  farm-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local

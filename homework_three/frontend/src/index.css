@@ -1,0 +1,111 @@
+:root {
+  --font-family: Roboto, system-ui, Helvetica, Arial, sans-serif;
+  font-family: Roboto, system-ui, Helvetica, Arial, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-text: #e0e0e0;
+  --color-text-secondary: rgb(228, 228, 228);
+  --color-primary: #7f52bd;
+  --color-primary-hover: #9a67ea;
+  --color-border: #333333;
+  --color-table-header: #2f2539;
+  --color-table-row: #1e1e1e;
+  --color-table-row-alt: #2a2a2a;
+  --color-table-row-hover: #3a3a3a;
+  --color-button-disabled: #555555;
+  --color-link: #bb86fc;
+  --color-link-hover: #9a67ea;
+  --color-overlay: rgba(18, 18, 18, 0.4);
+  --color-spinner-border: #552393;
+  --color-spinner-top: #c19cf8;
+
+  --color-navbar-background: #1f1f1f;
+  --color-navbar-link: #e0e0e0;
+  --color-navbar-link-hover: #9a67ea;
+  --color-navbar-active: #7f52bd;
+
+  --color-valid: #4CAF50;
+  --color-invalid: #F44336;
+
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+
+  --nav-border-radius: 20px;
+  --line-height: 1.5;
+  color-scheme: dark;
+
+  font-weight: var(--font-weight-normal);
+  background-color: var(--color-background);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 10px;
+}
+
+a {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+body {
+  position: relative;
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  font-weight: var(--font-weight-medium);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+button {
+  border-radius: var(--border-radius);
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  margin: 5px;
+  font-size: 1em;
+  font-weight: var(--font-weight-medium);
+  font-family: inherit;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+}
+
+button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto var(--color-primary);
+}
+
+button:disabled {
+  background-color: var(--color-button-disabled);
+  cursor: not-allowed;
+  border: none;
+}
