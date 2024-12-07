@@ -5,7 +5,7 @@ version).
 
 ## Software Requirements Specification & Pre-Scraped Data
 
-The Software Requirements Specification (initial version) can be found in the [SRS file](../docs/SRS.md).
+The Software Requirements Specification (initial version) can be found in the [SRS file](./SRS.md).
 
 ### Pre-Scraped Issuers/Symbols
 

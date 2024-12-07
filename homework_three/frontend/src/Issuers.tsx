@@ -182,7 +182,7 @@ const Issuers = () => {
                                     View Issuer
                                     <img
                                         alt="external link icon"
-                                        src="/external-link.svg"
+                                        src="./assets/img/external-link.svg"
                                         className="external-link-icon"
                                     />
                                 </a>

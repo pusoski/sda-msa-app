@@ -38,5 +38,5 @@ DataGrip/DataSpell. Credentials can be found in the [.env file](./code/.env). Ta
 
 Changes to the functioning of the filters/pipeline, which were initially created as part of
 [Homework One](../../homework_one), have been made to increase their performance.
-The testing showed increase in speed of 32%. As part of the prototype, only the first filter has been implemented.
+**The testing showed increase in speed of `32%`**. As part of the prototype, only the first filter has been implemented.
 The updated codes of the three filters are available [here](./code/backend/app/filters).
