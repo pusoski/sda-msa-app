@@ -17,5 +17,10 @@ async def run_insert_issuers():
 
 @router.get("/issuers")
 async def get_issuers():
-    issuers = list(collection.find({}, {"_id": 0, "symbol": 1, "is_bond": 1, "has_digit": 1, "valid": 1}))
+    issuers = list(collection.find({}, {"_id": 0,
+                                        "symbol": 1,
+                                        "is_bond": 1,
+                                        "has_digit": 1,
+                                        "valid": 1,
+                                        "last_scraped_date": 1}))
     return issuers

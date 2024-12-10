@@ -22,7 +22,11 @@ async def run_filter_one():
 
         db.issuers.update_one(
             {"symbol": symbol},
-            {"$setOnInsert": {"symbol": symbol, "is_bond": is_bond, "has_digit": has_digit, "valid": is_valid}},
+            {"$setOnInsert": {"symbol": symbol,
+                              "is_bond": is_bond,
+                              "has_digit": has_digit,
+                              "valid": is_valid,
+                              "last_scraped_date": "1/1/1995"}},
             upsert=True
         )
 
