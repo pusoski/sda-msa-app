@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./assets/css/main.css";
 import "./assets/css/Issuers.css";
 
@@ -10,7 +10,7 @@ interface Issuer {
     last_scraped_date: string;
 }
 
-type SortOrder = 'asc' | 'desc' | null;
+type SortOrder = 'asc' | 'desc';
 
 const Issuers = () => {
     const [issuers, setIssuers] = useState<Issuer[]>([]);
@@ -20,8 +20,14 @@ const Issuers = () => {
     const [searchTerm, setSearchTerm] = useState<string>(""); // Search by symbol
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>(null);
+    const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>('asc');
     const [selectedValidity, setSelectedValidity] = useState<string>("All");
+
+    const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+    const [validityFilter, setValidityFilter] = useState<string>("All");
+
+    // New state to track new issuers count
+    const [newIssuersCount, setNewIssuersCount] = useState<number>(0);
 
     useEffect(() => {
         if (loading) {
@@ -39,7 +45,15 @@ const Issuers = () => {
                 method: "POST",
             });
             await response.json();
-            await fetchIssuers();
+
+            const responseFetch = await fetch("http://localhost:8000/issuers");
+            const data: Issuer[] = await responseFetch.json();
+
+            const existingSymbols = new Set(issuers.map(issuer => issuer.symbol));
+            const newIssuers = data.filter(issuer => !existingSymbols.has(issuer.symbol));
+            setNewIssuersCount(newIssuers.length);
+
+            setIssuers(data);
         } catch (error) {
             console.error("Failed to scrape issuers:", error);
         }
@@ -70,18 +84,13 @@ const Issuers = () => {
         closeModal();
     };
 
-    const [sortOrder, setSortOrder] = useState<SortOrder>(null);
-
-    const [validityFilter, setValidityFilter] = useState<string>("All");
-
     const sortedIssuers = React.useMemo(() => {
         if (sortOrder === null) return issuers;
-        const sorted = [...issuers].sort((a, b) => {
+        return [...issuers].sort((a, b) => {
             if (a.symbol < b.symbol) return sortOrder === 'asc' ? -1 : 1;
             if (a.symbol > b.symbol) return sortOrder === 'asc' ? 1 : -1;
             return 0;
         });
-        return sorted;
     }, [issuers, sortOrder]);
 
     const filteredIssuers = sortedIssuers.filter((issuer) => {
@@ -162,6 +171,7 @@ const Issuers = () => {
                     </select>
                     <span>
                         Displaying {startRow} – {endRow} of {totalRows} results
+                        {newIssuersCount > 0 && ` (${newIssuersCount} new)`}
                     </span>
                 </div>
 
@@ -170,26 +180,26 @@ const Issuers = () => {
                         <div className="pagination-buttons">
                             <button onClick={handleFirstPage} disabled={currentPage === 1}>
                                 <span className="button-content">
-                                    <img alt="Filter icon" className="button-icon" src="/first-page-icon.svg" />
+                                    <img alt="First page" className="button-icon" src="/first-page-icon.svg"/>
                                     First
                                 </span>
                             </button>
                             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
                                 <span className="button-content">
-                                    <img alt="Filter icon" className="button-icon" src="/chevron-left-icon.svg" />
+                                    <img alt="Previous page" className="button-icon" src="/chevron-left-icon.svg"/>
                                     Previous
                                 </span>
                             </button>
                             <button onClick={handleNextPage} disabled={currentPage === totalPages}>
                                 <span className="button-content">
                                     Next
-                                    <img alt="Filter icon" className="button-icon" src="/chevron-right-icon.svg"/>
+                                    <img alt="Next page" className="button-icon" src="/chevron-right-icon.svg"/>
                                 </span>
                             </button>
                             <button onClick={handleLastPage} disabled={currentPage === totalPages}>
                                 <span className="button-content">
                                     Last
-                                    <img alt="Filter icon" className="button-icon" src="/last-page-icon.svg" />
+                                    <img alt="Last page" className="button-icon" src="/last-page-icon.svg"/>
                                 </span>
                             </button>
                         </div>
@@ -221,7 +231,7 @@ const Issuers = () => {
                     />
                     <button onClick={openModal} className="filter-sort-button">
                         <span className="button-content">
-                            <img alt="Filter icon" className="button-icon" src="/filter-icon.svg" />
+                            <img alt="Filter icon" className="button-icon" src="/filter-icon.svg"/>
                             Sort & Filter
                         </span>
                     </button>
@@ -265,9 +275,9 @@ const Issuers = () => {
                                     </span>
                             </td>
                             <td>
-                                <span>
+                                <span className="last_scraped_date">
                                     {issuer.last_scraped_date === "1/1/1995"
-                                        ? "Data has not been scraped" : issuer.last_scraped_date}
+                                        ? "N/A" : issuer.last_scraped_date}
                                 </span>
                             </td>
                             <td className="view-issuer-td">
@@ -290,7 +300,7 @@ const Issuers = () => {
                 </tbody>
             </table>
 
-            <PaginationControls />
+            <PaginationControls/>
 
             {loading && (
                 <div className="loading-overlay-back-drop">
@@ -309,16 +319,6 @@ const Issuers = () => {
                         <h2>Sort & Filter Issuers</h2>
                         <div className="modal-section">
                             <h3>Sort by Issuer Symbol</h3>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="sortOrder"
-                                    value="none"
-                                    checked={selectedSortOrder === null}
-                                    onChange={() => setSelectedSortOrder(null)}
-                                />
-                                Default
-                            </label>
                             <label>
                                 <input
                                     type="radio"
@@ -375,12 +375,8 @@ const Issuers = () => {
                             </label>
                         </div>
                         <div className="modal-actions">
-                            <button onClick={handleApplyFilters} className="apply-button">
-                                Apply
-                            </button>
-                            <button onClick={closeModal} className="cancel-button">
-                                Cancel
-                            </button>
+                            <button onClick={handleApplyFilters}>Apply</button>
+                            <button onClick={closeModal}>Cancel</button>
                         </div>
                     </div>
                 </div>
