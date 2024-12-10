@@ -1,4 +1,4 @@
-<h1><img alt="Macedonian Stocks Analyzer Logo" src="./homework_three/frontend/public/msa-logo-150px.png" style="width: 50px; height: 50px; vertical-align: middle" /> Macedonian Stocks Analyzer</h1>
+<h1><img alt="Macedonian Stocks Analyzer Logo" src="homework_three/frontend/public/msa-favicon.png" style="width: 50px; height: 50px; vertical-align: middle" /> Macedonian Stocks Analyzer</h1>
 
 ## Description
 
@@ -22,7 +22,7 @@ Quick links:
 
 Quick Links:
 
-1. [Architectural Design Document](./homework_two/architecture/)
+1. [Architectural Design Document](./homework_two/architecture)
 2. [User Interface (UI) Mockups](./homework_two/mockups)
 3. [Technical Prototype Application](./homework_two/tech_prototype)
 
