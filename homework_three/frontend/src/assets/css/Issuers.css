@@ -41,9 +41,11 @@ td {
     padding: 8px;
     border-top: 2px solid var(--purple-table-border);
 }
+
 thead:first-child tr:first-child th:first-child, tbody:first-child tr:first-child td:first-child {
     border-radius: var(--border-radius-small) 0 0 0;
 }
+
 thead:last-child tr:last-child th:first-child, tbody:last-child tr:last-child td:first-child {
     border-radius: 0 0 0 var(--border-radius-small);
 }
@@ -81,7 +83,7 @@ table tbody tr:hover {
     font-family: var(--main-font-family), sans-serif;
 }
 
-.loading-overlay-back-drop{
+.loading-overlay-back-drop {
     position: fixed;
     display: flex;
     align-items: center;
@@ -131,8 +133,12 @@ table tbody tr:hover {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .pagination-info {
@@ -197,7 +203,6 @@ input[type=text]:focus {
     }
 }
 
-/* Modal Content */
 .modal-content {
     border: 2px solid var(--purple-button);
     background: var(--purple-table-header);
@@ -227,11 +232,14 @@ input[type=text]:focus {
 
 .modal-section label {
     margin-right: 8px;
-    font-size: 1rem;
 }
 
 .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+}
+
+.last_scraped_date {
+    color: grey;
 }
