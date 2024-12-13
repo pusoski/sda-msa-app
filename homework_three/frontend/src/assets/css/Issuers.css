@@ -240,6 +240,6 @@ input[type=text]:focus {
     gap: 10px;
 }
 
-.last_scraped_date {
+.last_scraped_date_na {
     color: grey;
 }

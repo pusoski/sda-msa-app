@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./assets/css/main.css";
 import "./assets/css/Issuers.css";
 
@@ -12,12 +12,12 @@ interface Issuer {
 
 type SortOrder = 'asc' | 'desc';
 
-const Issuers = () => {
+const Issuers: React.FC = () => {
     const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number | "All">(20);
-    const [searchTerm, setSearchTerm] = useState<string>(""); // Search by symbol
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>('asc');
@@ -26,7 +26,6 @@ const Issuers = () => {
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
     const [validityFilter, setValidityFilter] = useState<string>("All");
 
-    // New state to track new issuers count
     const [newIssuersCount, setNewIssuersCount] = useState<number>(0);
 
     useEffect(() => {
@@ -38,36 +37,61 @@ const Issuers = () => {
         return () => document.body.classList.remove("no-scroll");
     }, [loading]);
 
-    const handleScrapeIssuers = async () => {
+    const handleScrapeIssuers = () => {
         setLoading(true);
-        try {
-            const response = await fetch("http://localhost:8000/scrape-issuers", {
-                method: "POST",
+        fetch("http://localhost:8000/run-filter-one", {
+            method: "POST",
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        throw new Error(errorData.detail || "Failed to run filter one.");
+                    });
+                }
+                return response.json();
+            })
+            .then(() => {
+                return fetch("http://localhost:8000/filter-one-data");
+            })
+            .then((responseFetch) => {
+                if (!responseFetch.ok) {
+                    return responseFetch.json().then((errorData) => {
+                        throw new Error(errorData.detail || "Failed to fetch filter one data.");
+                    });
+                }
+                return responseFetch.json();
+            })
+            .then((data: Issuer[]) => {
+                const existingSymbols = new Set(issuers.map(issuer => issuer.symbol));
+                const newIssuers = data.filter(issuer => !existingSymbols.has(issuer.symbol));
+                setNewIssuersCount(newIssuers.length);
+
+                setIssuers(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Failed to scrape issuers:", error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
-            await response.json();
-
-            const responseFetch = await fetch("http://localhost:8000/issuers");
-            const data: Issuer[] = await responseFetch.json();
-
-            const existingSymbols = new Set(issuers.map(issuer => issuer.symbol));
-            const newIssuers = data.filter(issuer => !existingSymbols.has(issuer.symbol));
-            setNewIssuersCount(newIssuers.length);
-
-            setIssuers(data);
-        } catch (error) {
-            console.error("Failed to scrape issuers:", error);
-        }
-        setLoading(false);
     };
 
-    const fetchIssuers = async () => {
-        try {
-            const response = await fetch("http://localhost:8000/issuers");
-            const data = await response.json();
-            setIssuers(data);
-        } catch (error) {
-            console.error("Failed to fetch issuers:", error);
-        }
+    const fetchIssuers = () => {
+        fetch("http://localhost:8000/filter-one-data")
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((errorData) => {
+                        throw new Error(errorData.detail || "Failed to fetch issuers.");
+                    });
+                }
+                return response.json();
+            })
+            .then((data: Issuer[]) => {
+                setIssuers(data);
+            })
+            .catch((error: unknown) => {
+                console.error("Failed to fetch issuers:", error);
+            });
     };
 
     useEffect(() => {
@@ -107,7 +131,6 @@ const Issuers = () => {
     const currentIssuers =
         rowsPerPage === "All" ? filteredIssuers : filteredIssuers.slice(startIndex, startIndex + rowsPerPage);
 
-    // Pagination Handlers
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
@@ -180,26 +203,26 @@ const Issuers = () => {
                         <div className="pagination-buttons">
                             <button onClick={handleFirstPage} disabled={currentPage === 1}>
                                 <span className="button-content">
-                                    <img alt="First page" className="button-icon" src="/first-page-icon.svg"/>
+                                    <img alt="First page" className="button-icon" src="/first-page-icon.svg" />
                                     First
                                 </span>
                             </button>
                             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
                                 <span className="button-content">
-                                    <img alt="Previous page" className="button-icon" src="/chevron-left-icon.svg"/>
+                                    <img alt="Previous page" className="button-icon" src="/chevron-left-icon.svg" />
                                     Previous
                                 </span>
                             </button>
                             <button onClick={handleNextPage} disabled={currentPage === totalPages}>
                                 <span className="button-content">
                                     Next
-                                    <img alt="Next page" className="button-icon" src="/chevron-right-icon.svg"/>
+                                    <img alt="Next page" className="button-icon" src="/chevron-right-icon.svg" />
                                 </span>
                             </button>
                             <button onClick={handleLastPage} disabled={currentPage === totalPages}>
                                 <span className="button-content">
                                     Last
-                                    <img alt="Last page" className="button-icon" src="/last-page-icon.svg"/>
+                                    <img alt="Last page" className="button-icon" src="/last-page-icon.svg" />
                                 </span>
                             </button>
                         </div>
@@ -216,7 +239,7 @@ const Issuers = () => {
                     <h1>Issuers List</h1>
                     <button onClick={handleScrapeIssuers}>
                         <span className="button-content">
-                            <img alt="Load icon" className="button-icon" src="/load-icon.svg"/>
+                            <img alt="Load icon" className="button-icon" src="/load-icon.svg" />
                             Load/Refresh List
                         </span>
                     </button>
@@ -231,14 +254,14 @@ const Issuers = () => {
                     />
                     <button onClick={openModal} className="filter-sort-button">
                         <span className="button-content">
-                            <img alt="Filter icon" className="button-icon" src="/filter-icon.svg"/>
+                            <img alt="Filter icon" className="button-icon" src="/filter-icon.svg" />
                             Sort & Filter
                         </span>
                     </button>
                 </div>
             </div>
 
-            <PaginationControls/>
+            <PaginationControls />
 
             <table>
                 <thead>
@@ -275,10 +298,12 @@ const Issuers = () => {
                                     </span>
                             </td>
                             <td>
-                                <span className="last_scraped_date">
-                                    {issuer.last_scraped_date === "1/1/1995"
-                                        ? "N/A" : issuer.last_scraped_date}
-                                </span>
+                                    <span
+                                        className={issuer.last_scraped_date == null ? "last_scraped_date_na" : ""}
+                                    >
+                                        {issuer.last_scraped_date == null
+                                            ? "N/A" : issuer.last_scraped_date}
+                                    </span>
                             </td>
                             <td className="view-issuer-td">
                                 <a
@@ -300,7 +325,7 @@ const Issuers = () => {
                 </tbody>
             </table>
 
-            <PaginationControls/>
+            <PaginationControls />
 
             {loading && (
                 <div className="loading-overlay-back-drop">
@@ -360,7 +385,6 @@ const Issuers = () => {
                                     checked={selectedValidity === 'Valid'}
                                     onChange={(e) => setSelectedValidity(e.target.value)}
                                 />
-                                <span className="checkmark"></span>
                                 Valid
                             </label>
                             <label>
@@ -383,6 +407,7 @@ const Issuers = () => {
             )}
         </div>
     );
+
 };
 
 export default Issuers;
