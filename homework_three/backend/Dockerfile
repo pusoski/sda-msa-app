@@ -18,6 +18,8 @@ WORKDIR /app
 
 COPY main.py ./backend/
 
+COPY start.sh ./backend/
+
 RUN mkdir -p ./backend/database
 
 RUN mkdir -p ./backend/backend
@@ -36,4 +38,4 @@ WORKDIR /app/backend
 
 ENV PYTHONPATH=/app
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["./start.sh"]
