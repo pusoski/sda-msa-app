@@ -2,15 +2,10 @@ from backend.app.filters.filter_one.bonds_extractor import get_bond_symbols
 from backend.database.setup_database import get_database
 from backend.app.filters.filter_one.issuers_dropdown_scraper import scrape_issuers_dropdown
 
-
-async def run_filter_one():
+def run_filter_one():
     db = get_database()
-
-    if "issuers" not in db.list_collection_names():
-        db.create_collection("issuers", capped=False)
-
-    issuer_symbols = await scrape_issuers_dropdown()
-    bonds_symbols = await get_bond_symbols()
+    issuer_symbols = scrape_issuers_dropdown()
+    bonds_symbols = get_bond_symbols()
 
     for symbol in issuer_symbols:
         is_bond = symbol in bonds_symbols
@@ -22,7 +17,10 @@ async def run_filter_one():
 
         db.issuers.update_one(
             {"symbol": symbol},
-            {"$setOnInsert": {"symbol": symbol, "is_bond": is_bond, "has_digit": has_digit, "valid": is_valid}},
+            {"$setOnInsert": {"symbol": symbol,
+                              "is_bond": is_bond,
+                              "has_digit": has_digit,
+                              "valid": is_valid}},
             upsert=True
         )
 
