@@ -18,8 +18,6 @@ WORKDIR /app
 
 COPY main.py ./backend/
 
-COPY start.sh ./backend/
-
 RUN mkdir -p ./backend/database
 
 RUN mkdir -p ./backend/backend
@@ -39,8 +37,9 @@ WORKDIR /app/backend
 ENV PYTHONPATH=/app
 
 CMD ["/bin/sh", "-c", "\
+    echo 'Starting Uvicorn server...'; \
+    exec uvicorn main:app --host 0.0.0.0 --port 8000 --reload --workers 1 & \
     echo 'Starting Python script...'; \
     python /app/backend/app/filters/main.py; \
     echo 'Python script completed.'; \
-    echo 'Starting Uvicorn server...'; \
-    exec uvicorn main:app --host 0.0.0.0 --port 8000 --reload"]
+    wait"]
