@@ -4,91 +4,114 @@ from bs4 import BeautifulSoup
 from collections import OrderedDict
 from datetime import datetime
 from backend.app.filters.filter_three.format_records import format_scraped_record
+import pymongo
 
-BASE_URL_TEMPLATE = "https://www.mse.mk/en/stats/symbolhistory/{}/?FromDate={}&ToDate={}"  # URL format
+BASE_URL_TEMPLATE = "https://www.mse.mk/en/stats/symbolhistory/{}/?FromDate={}&ToDate={}"
+
+
+def get_last_scraped_date(symbol):
+    db = get_database()
+
+    result = db.data_entries.find_one(
+        {"symbol": symbol},
+        sort=[("date", -1)],
+        projection={"date": 1}
+    )
+    return result.get("date") if result else None
 
 
 def scrape_data_for_issuer(symbol, scraping_date=None):
     db = get_database()
-    now = datetime.now()
-    today = f"{now.month}/{now.day}/{now.year}"
+
+    system_date = f"{datetime.now().month}/{datetime.now().day}/{datetime.now().year}"
+    system_date_formatted = datetime.strptime(system_date, "%m/%d/%Y").strftime("%Y-%m-%d")
 
     data = []
     valid_years = 0
 
-    most_recent_entries = list(db.data_entries.find({"symbol": symbol}))
-    if most_recent_entries:
-        most_recent_entries = sorted(
-            most_recent_entries,
-            key=lambda x: datetime.strptime(x["date"], "%m/%d/%Y"),
-            reverse=True
-        )
-        most_recent_date = datetime.strptime(most_recent_entries[0]["date"], "%m/%d/%Y")
-    else:
-        most_recent_date = None
-
     if not scraping_date:
-        scraping_date = f"1/1/{now.year}"
-
-    formatted_scraping_date = datetime.strptime(scraping_date, "%m/%d/%Y")
-
-    if most_recent_date and most_recent_date < formatted_scraping_date:
-        start_date = most_recent_date.strftime("%m/%d/%Y")
+        scraping_date = f"1/1/{datetime.now().year}"
+        end_year = 1994
+        start_year = datetime.strptime(scraping_date, "%m/%d/%Y").year
     else:
-        start_date = f"1/1/{formatted_scraping_date.year}"
+        start_year = datetime.strptime(scraping_date, "%Y-%m-%d").year
+        end_year = start_year - 1
+        scraping_date = datetime.strptime(scraping_date, "%Y-%m-%d").strftime("%m/%d/%Y")
 
-    start_year = datetime.strptime(start_date, "%m/%d/%Y").year
-
-    for year in range(start_year, 1994, -1):
+    for year in range(start_year, end_year, -1):
         if valid_years >= 10:
             break
 
-        year_start_date = start_date if year == start_year else f"1/1/{year}"
-        year_end_date = f"12/31/{year}"
+        if scraping_date == system_date:
+            year_start_date = system_date
+            year_end_date = system_date
+        elif year == start_year:
+            year_start_date = scraping_date
+            year_end_date = f"12/31/{year}"
+        else:
+            year_start_date = f"1/1/{year}"
+            year_end_date = f"12/31/{year}"
+
+        # if year == start_year:
+        #     year_start_date = scraping_date
+        # else:
+        #     year_start_date = f"1/1/{year}"
+        # year_end_date = f"12/31/{year}"
+
 
         url = BASE_URL_TEMPLATE.format(symbol, year_start_date, year_end_date)
+
         response = requests.get(url)
+        response.raise_for_status()
+
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        if soup.find('div', class_='col-md-12', string="No data"):
+        no_data_div = soup.find('div', class_='col-md-12')
+        if no_data_div and "No data" in no_data_div.get_text():
             continue
 
         table = soup.find('table')
-        if table:
-            headers = [th.text.strip()
-                       .replace(' ', '_')
-                       .replace('%', 'pct')
-                       .lower()
-                       .replace('.', '')
-                       for th in table.find_all('th')]
+        if not table:
+            continue
 
-            for row in table.find_all('tr')[1:]:
-                cells = row.find_all('td')
-                if len(cells) == len(headers):
-                    record = OrderedDict((headers[i], cells[i].text.strip()) for i in range(len(headers)))
-                    format_scraped_record(record)
-                    record['symbol'] = symbol
-                    data.append(record)
+        headers = [
+            th.get_text(strip=True)
+            .replace(' ', '_')
+            .replace('%', 'pct')
+            .lower()
+            .replace('.', '')
+            for th in table.find_all('th')
+        ]
 
-            valid_years += 1
+        for row in table.find_all('tr')[1:]:
+            cells = row.find_all('td')
+            if len(cells) != len(headers):
+                continue
+            record = OrderedDict()
+            for header, cell in zip(headers, cells):
+                record[header] = cell.get_text(strip=True)
+            format_scraped_record(record)
+            record['symbol'] = symbol
+            record['date'] = record.get('date', system_date_formatted)
+            record['date'] = datetime.strptime(record['date'], "%m/%d/%Y").strftime("%Y-%m-%d")
+            data.append(record)
 
-    unique_data = {f"{record['symbol']}_{record['date']}": record for record in data}
-    deduplicated_data = list(unique_data.values())
+        valid_years += 1
 
-    for record in deduplicated_data:
-        db.data_entries.update_one(
+    bulk_operations = [
+        pymongo.UpdateOne(
             {"symbol": record["symbol"], "date": record["date"]},
             {"$set": record},
             upsert=True
         )
+        for record in data
+    ]
+
+    if bulk_operations:
+        db.data_entries.bulk_write(bulk_operations)
 
     db.issuers.update_one(
         {"symbol": symbol},
-        {"$set": {"last_scraped_date": today}},
-        upsert=False
+        {"$set": {"last_scraped_date": system_date_formatted}},
+        upsert=True
     )
-
-def get_last_scraped_date(symbol):
-    db = get_database()
-    issuer = db.issuers.find_one({"symbol": symbol})
-    return issuer.get("last_scraped_date")

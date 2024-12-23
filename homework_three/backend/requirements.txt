@@ -6,3 +6,4 @@ fastapi==0.115.5
 uvicorn==0.32.1
 requests==2.32.3
 typing
+pydantic==2.10.4

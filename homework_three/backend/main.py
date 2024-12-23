@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api.endpoints.data import router as data_router
+from backend.api.endpoints import api_router
 
 app = FastAPI()
 
@@ -12,8 +12,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(data_router)
+app.include_router(api_router)
 
-@app.get("/")
+@app.get("/", tags=["Root"])
 async def root():
     return {"message": "Hello from the API!"}

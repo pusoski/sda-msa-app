@@ -10,17 +10,27 @@ def run_filter_one():
     for symbol in issuer_symbols:
         is_bond = symbol in bonds_symbols
         has_digit = any(char.isdigit() for char in symbol)
+
         if has_digit or is_bond:
             is_valid = False
+            is_watched = None
         else:
             is_valid = True
+            is_watched = True
+
+        update_data = {
+            "symbol": symbol,
+            "is_bond": is_bond,
+            "has_digit": has_digit,
+            "valid": is_valid
+        }
+
+        if is_watched is not None:
+            update_data["is_watched"] = is_watched
 
         db.issuers.update_one(
             {"symbol": symbol},
-            {"$setOnInsert": {"symbol": symbol,
-                              "is_bond": is_bond,
-                              "has_digit": has_digit,
-                              "valid": is_valid}},
+            {"$setOnInsert": update_data},
             upsert=True
         )
 

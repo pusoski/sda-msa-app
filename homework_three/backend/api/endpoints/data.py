@@ -1,8 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
-from typing import Optional
+from typing import Optional, List
 from backend.database.setup_database import get_database
-from backend.app.filters.filter_one.filter_one_main import run_filter_one
-from backend.app.filters.filter_three.filter_three_main import run_filter_three
 from datetime import datetime
 
 router = APIRouter()
@@ -11,12 +9,14 @@ db = get_database()
 
 @router.get("/filter-one-data")
 def get_issuers():
-    issuers = list(db.issuers.find({}, {"_id": 0,
-                                        "symbol": 1,
-                                        "is_bond": 1,
-                                        "has_digit": 1,
-                                        "valid": 1,
-                                        "last_scraped_date": 1}))
+    issuers = list(db.issuers.find({}, {
+        "_id": 0,
+        "symbol": 1,
+        "is_bond": 1,
+        "has_digit": 1,
+        "valid": 1,
+        "last_scraped_date": 1
+    }))
     return issuers
 
 
@@ -70,13 +70,4 @@ def get_historical_data(
             detail=f"An error occurred while fetching historical data: {str(e)}"
         )
 
-@router.post("/run-filter-one")
-def run_insert_issuers():
-    result_message =  run_filter_one()
-    return {"message": result_message}
-
-@router.post("/run-filter-three")
-def run_insert_issuers():
-    result_message =  run_filter_three()
-    return {"message": result_message}
 
