@@ -14,7 +14,6 @@ type SortOrder = 'asc' | 'desc';
 
 const Issuers: React.FC = () => {
     const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number | "All">(20);
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -25,56 +24,6 @@ const Issuers: React.FC = () => {
 
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
     const [validityFilter, setValidityFilter] = useState<string>("All");
-
-    const [newIssuersCount, setNewIssuersCount] = useState<number>(0);
-
-    useEffect(() => {
-        if (loading) {
-            document.body.classList.add("no-scroll");
-        } else {
-            document.body.classList.remove("no-scroll");
-        }
-        return () => document.body.classList.remove("no-scroll");
-    }, [loading]);
-
-    const handleScrapeIssuers = () => {
-        setLoading(true);
-        fetch("http://localhost:8000/run-filter-one", {
-            method: "POST",
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    return response.json().then((errorData) => {
-                        throw new Error(errorData.detail || "Failed to run filter one.");
-                    });
-                }
-                return response.json();
-            })
-            .then(() => {
-                return fetch("http://localhost:8000/filter-one-data");
-            })
-            .then((responseFetch) => {
-                if (!responseFetch.ok) {
-                    return responseFetch.json().then((errorData) => {
-                        throw new Error(errorData.detail || "Failed to fetch filter one data.");
-                    });
-                }
-                return responseFetch.json();
-            })
-            .then((data: Issuer[]) => {
-                const existingSymbols = new Set(issuers.map(issuer => issuer.symbol));
-                const newIssuers = data.filter(issuer => !existingSymbols.has(issuer.symbol));
-                setNewIssuersCount(newIssuers.length);
-
-                setIssuers(data);
-            })
-            .catch((error: unknown) => {
-                console.error("Failed to scrape issuers:", error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
 
     const fetchIssuers = () => {
         fetch("http://localhost:8000/filter-one-data")
@@ -194,7 +143,6 @@ const Issuers: React.FC = () => {
                     </select>
                     <span>
                         Displaying {startRow} – {endRow} of {totalRows} results
-                        {newIssuersCount > 0 && ` (${newIssuersCount} new)`}
                     </span>
                 </div>
 
@@ -237,12 +185,6 @@ const Issuers: React.FC = () => {
             <div className="page-title">
                 <div className="page-title-left">
                     <h1>Issuers List</h1>
-                    <button onClick={handleScrapeIssuers}>
-                        <span className="button-content">
-                            <img alt="Load icon" className="button-icon" src="/load-icon.svg" />
-                            Load/Refresh List
-                        </span>
-                    </button>
                 </div>
                 <div className="page-title-right">
                     <input
@@ -326,17 +268,6 @@ const Issuers: React.FC = () => {
             </table>
 
             <PaginationControls />
-
-            {loading && (
-                <div className="loading-overlay-back-drop">
-                    <div className="loading-overlay-content">
-                        <div className="loading-overlay-spinner-container">
-                            <div className="loading-overlay-spinner"></div>
-                        </div>
-                        <div className="loading-overlay-text-container">Loading... This may take a while.</div>
-                    </div>
-                </div>
-            )}
 
             {isModalOpen && (
                 <div className="modal-overlay">
