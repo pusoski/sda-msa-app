@@ -115,7 +115,7 @@ button:disabled .button-content img {
     margin-bottom: 30px;
 }
 
-.page-title-left, .page-title-right {
+.page-title-right, .page-title-left {
     display: flex;
     align-items: center;
     gap: 10px;
