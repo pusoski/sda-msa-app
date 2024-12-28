@@ -1,0 +1,103 @@
+.personalization-page {
+    display: flex;
+    /*justify-content: space-between;*/
+}
+
+.issuers-section {
+    order: 1;
+    width: 15%;
+    margin-right: 20px;
+}
+
+.order-section {
+    order: 3;
+    width: 90%;
+    flex: 1;
+}
+
+.content-list {
+    padding: 2%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 16px;
+}
+
+.content-list-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.content-item {
+    background-color: #663366;
+    color: white;
+    border-radius: 8px;
+    max-width: 40vh;
+    overflow: hidden;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.content-item:nth-of-type(4){
+    grid-row: span 2;
+}
+
+.content-item:hover {
+    background-color: #6a006a;
+}
+
+.watch-status-icon{
+    width: 24px;
+    height: 24px;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title{
+    display: flex;
+    padding: 10px 20px;
+}
+
+.issuers-table{
+    max-height: 10px;
+    overflow-y: auto;
+}
+
+.issuers-table td {
+    padding: 12px;
+}
+
+
+.issuers-table tr td:last-child {
+    width: 48px;
+    text-align: center;
+}
+
+
+
+
+/*.issuers-table {*/
+/*    border-collapse: collapse; !* Ensures no extra spacing between borders *!*/
+/*    width: 100%; !* Optional for full width *!*/
+/*    border-color: red; !* Adds an outer border to the table *!*/
+/*}*/
+
+/*.issuers-table tr {*/
+/*    border-bottom: 3px red; !* Keeps horizontal lines between rows *!*/
+/*}*/
+
+/*.issuers-table td, .issuers-table th {*/
+/*    border: none; !* Removes all inner borders initially *!*/
+/*}*/
+
+/*.issuers-table td:first-child, .issuers-table th:first-child {*/
+/*    border-left: 3px solid black; !* Adds a left border for the first column *!*/
+/*}*/
+
+/*.issuers-table td:last-child, .issuers-table th:last-child {*/
+/*    border-right: 3px solid black; !* Adds a right border for the last column *!*/
+/*}*/

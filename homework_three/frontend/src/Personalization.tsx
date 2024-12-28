@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent} from "@dnd-kit/core";
-import {arrayMove, useSortable, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import React, { useEffect, useState } from "react";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, useSortable, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import "./assets/css/main.css";
 import "./assets/css/Personalization.css";
@@ -33,7 +33,6 @@ export const SortableItem: React.FC<SortableItemProps> = ({ id, title, subtitle 
     );
 };
 
-
 interface ContentItem {
     id: number;
     title: string;
@@ -65,17 +64,17 @@ const Personalization: React.FC = () => {
                 setOriginalOrder(data);
 
                 const allContentItems: ContentItem[] = [
-                    {id: 1, title: 'RSI', subtitle: 'Relative Strength Index'},
-                    {id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence'},
-                    {id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator'},
-                    {id: 4, title: 'CCI', subtitle: 'Commodity Channel Index'},
-                    {id: 5, title: 'WILLR', subtitle: 'Williams %R'},
-                    {id: 6, title: 'SMA', subtitle: 'Simple Moving Average'},
-                    {id: 7, title: 'EMA', subtitle: 'Exponential Moving Average'},
-                    {id: 8, title: 'WMA', subtitle: 'Weighted Moving Average'},
-                    {id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands'},
-                    {id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average'},
-                    {id: 11, title: 'Historical Data', subtitle: 'View Historical Data'},
+                    { id: 1, title: 'RSI', subtitle: 'Relative Strength Index' },
+                    { id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence' },
+                    { id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator' },
+                    { id: 4, title: 'CCI', subtitle: 'Commodity Channel Index' },
+                    { id: 5, title: 'WILLR', subtitle: 'Williams %R' },
+                    { id: 6, title: 'SMA', subtitle: 'Simple Moving Average' },
+                    { id: 7, title: 'EMA', subtitle: 'Exponential Moving Average' },
+                    { id: 8, title: 'WMA', subtitle: 'Weighted Moving Average' },
+                    { id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands' },
+                    { id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average' },
+                    { id: 11, title: 'Historical Data', subtitle: 'View Historical Data' },
                 ];
 
                 const orderedItems = data
@@ -86,17 +85,17 @@ const Personalization: React.FC = () => {
             .catch(error => {
                 console.error('Error fetching content order:', error);
                 const defaultOrder: ContentItem[] = [
-                    {id: 1, title: 'RSI', subtitle: 'Relative Strength Index'},
-                    {id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence'},
-                    {id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator'},
-                    {id: 4, title: 'CCI', subtitle: 'Commodity Channel Index'},
-                    {id: 5, title: 'WILLR', subtitle: 'Williams %R'},
-                    {id: 6, title: 'SMA', subtitle: 'Simple Moving Average'},
-                    {id: 7, title: 'EMA', subtitle: 'Exponential Moving Average'},
-                    {id: 8, title: 'WMA', subtitle: 'Weighted Moving Average'},
-                    {id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands'},
-                    {id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average'},
-                    {id: 11, title: 'Historical Data', subtitle: 'View Historical Data'},
+                    { id: 1, title: 'RSI', subtitle: 'Relative Strength Index' },
+                    { id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence' },
+                    { id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator' },
+                    { id: 4, title: 'CCI', subtitle: 'Commodity Channel Index' },
+                    { id: 5, title: 'WILLR', subtitle: 'Williams %R' },
+                    { id: 6, title: 'SMA', subtitle: 'Simple Moving Average' },
+                    { id: 7, title: 'EMA', subtitle: 'Exponential Moving Average' },
+                    { id: 8, title: 'WMA', subtitle: 'Weighted Moving Average' },
+                    { id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands' },
+                    { id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average' },
+                    { id: 11, title: 'Historical Data', subtitle: 'View Historical Data' },
                 ];
                 setContentItems(defaultOrder);
                 setOriginalOrder(defaultOrder.map(item => item.id));
@@ -108,7 +107,7 @@ const Personalization: React.FC = () => {
             .then(response => response.json())
             .then((data: Issuer[]) => {
                 setIssuers(data);
-                setOriginalIssuers(data.map(issuer => ({...issuer})));
+                setOriginalIssuers(data.map(issuer => ({ ...issuer })));
             })
             .catch(error => {
                 console.error('Error fetching issuers:', error);
@@ -118,7 +117,7 @@ const Personalization: React.FC = () => {
     }, []);
 
     const handleDragEnd = (event: DragEndEvent) => {
-        const {active, over} = event;
+        const { active, over } = event;
 
         if (over && active.id !== over.id) {
             const oldIndex = contentItems.findIndex(item => item.id === active.id);
@@ -151,7 +150,7 @@ const Personalization: React.FC = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({order_list: newOrderIds}),
+                body: JSON.stringify({ order_list: newOrderIds }),
             })
                 .then(response => {
                     if (response.ok) {
@@ -178,7 +177,7 @@ const Personalization: React.FC = () => {
                 .then(response => {
                     if (response.ok) {
                         console.log('Issuers saved successfully');
-                        setOriginalIssuers(issuers.map(issuer => ({...issuer})));
+                        setOriginalIssuers(issuers.map(issuer => ({ ...issuer })));
                         setHasIssuerChanges(false);
                     } else {
                         return response.json().then(data => {
@@ -202,7 +201,7 @@ const Personalization: React.FC = () => {
     const toggleWatchStatus = (symbol: string) => {
         const updatedIssuers = issuers.map(issuer => {
             if (issuer.symbol === symbol) {
-                return {...issuer, is_watched: !issuer.is_watched};
+                return { ...issuer, is_watched: !issuer.is_watched };
             }
             return issuer;
         });
@@ -222,34 +221,14 @@ const Personalization: React.FC = () => {
                         disabled={!hasOrderChanges && !hasIssuerChanges}
                         className={`save-button ${hasOrderChanges || hasIssuerChanges ? 'enabled' : 'disabled'}`}
                     >
-                        <span className="button-content">
-                            <img alt="Save icon" className="button-icon" src="/save-icon.svg"/>
-                            Save Changes
-                        </span>
+                    <span className="button-content">
+                        <img alt="Save icon" className="button-icon" src="/save-icon.svg" />
+                        Save Changes
+                    </span>
                     </button>
                 </div>
-                <div className="page-title-right"></div>
             </div>
             <div className="personalization-page">
-                <div className="order-section">
-                    <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <SortableContext
-                            items={contentItems.map(item => item.id)}
-                            strategy={verticalListSortingStrategy}
-                        >
-                            <div className="content-list">
-                                {contentItems.map((item) => (
-                                    <SortableItem key={item.id} id={item.id} title={item.title}
-                                                  subtitle={item.subtitle}/>
-                                ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                </div>
                 <div className="issuers-section">
                     <table className="issuers-table">
                         <tbody>
@@ -270,9 +249,30 @@ const Personalization: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                <div className="order-section">
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={contentItems.map(item => item.id)}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            <div className="content-list">
+                                {contentItems.map((item) => (
+                                    <SortableItem key={item.id} id={item.id} title={item.title}
+                                                  subtitle={item.subtitle}/>
+                                ))}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                </div>
+
             </div>
         </div>
     );
+
 };
 
 export default Personalization;
