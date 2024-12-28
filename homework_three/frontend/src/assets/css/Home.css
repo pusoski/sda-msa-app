@@ -1,0 +1,25 @@
+.page-content{
+    width: 100%;
+    text-justify: inter-word;
+    font-family: inherit;
+    font-size: 18px;
+    line-height: 1.3;
+    word-wrap: normal;
+}
+.page-title-left{
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+#break{
+    margin: 20px;
+    margin-left: 0;
+    margin-right: 0;
+    border-style: inset;
+    border-width: 2px;
+
+    border-color:white;
+}
+ul{
+    list-style: none;
+    padding-left: 0;
+}
