@@ -23,3 +23,58 @@ ul{
     list-style: none;
     padding-left: 0;
 }
+.welcome-section p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.fancy-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+
+.disclaimer {
+    display: flex;
+    align-items: flex-start;
+    background-color: #3c133c;
+    border-left: 5px solid rgba(173, 52, 183, 0.3);
+    padding: 15px;
+    border-radius: 4px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.disclaimer div {
+    flex: 1;
+}
+
+.disclaimer strong {
+    color: white;
+}
+
+.app-overview article p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.features-list, .developers-list {
+    padding: 0;
+}
+
+.features-list li, .developers-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.features-list li strong {
+    border-radius: var(--border-radius-small);
+    margin-right: 5px;
+    padding: 5px;
+    color: white;
+    background-color: rgb(60, 19, 60);
+}
