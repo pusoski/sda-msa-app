@@ -32,7 +32,7 @@ const RootComponent: React.FC = () => {
 
         checkBackendStatus();
 
-        const intervalId = setInterval(checkBackendStatus, 10000);
+        const intervalId = setInterval(checkBackendStatus, 20000);
 
         return () => clearInterval(intervalId);
     }, []);
@@ -58,8 +58,8 @@ const RootComponent: React.FC = () => {
                             <div className="loading-overlay-spinner"></div>
                         </div>
                         <div className="loading-overlay-text-container">
-                            Initializing... This may take a few minutes.
-                            <p className="details">{details || ""}</p>
+                            Initializing... This may take a while.
+                            <p className="details">{details || "Getting there"}...</p>
                         </div>
                     </div>
                 </div>

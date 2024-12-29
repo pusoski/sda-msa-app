@@ -1,0 +1,9 @@
+.chart-instructions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chart-instructions span {
+    line-height: 1.3;
+}
