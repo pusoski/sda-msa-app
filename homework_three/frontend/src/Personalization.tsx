@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
-import { arrayMove, useSortable, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import React, {useEffect, useState} from "react";
+import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent} from "@dnd-kit/core";
+import {arrayMove, useSortable, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities";
 import "./assets/css/main.css";
 import "./assets/css/Personalization.css";
 
 interface SortableItemProps {
     id: number;
     title: string;
-    subtitle: string;
+    subtitle?: string;
+    className?: string;
 }
 
-export const SortableItem: React.FC<SortableItemProps> = ({ id, title, subtitle }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+export const SortableItem: React.FC<SortableItemProps> = ({id, title, subtitle, className}) => {
+    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -23,7 +24,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({ id, title, subtitle 
         <div
             ref={setNodeRef}
             style={style}
-            className="content-item"
+            className={className}
             {...attributes}
             {...listeners}
         >
@@ -37,6 +38,7 @@ interface ContentItem {
     id: number;
     title: string;
     subtitle: string;
+    category: "Moving Average" | "Oscillator" | "External";
 }
 
 interface Issuer {
@@ -44,7 +46,14 @@ interface Issuer {
     is_watched: boolean;
 }
 
+interface StrategyItem {
+    id: number;
+    name: string;
+    description: string;
+}
+
 const Personalization: React.FC = () => {
+    // Existing state variables
     const [contentItems, setContentItems] = useState<ContentItem[]>([]);
     const [originalOrder, setOriginalOrder] = useState<number[]>([]);
     const [hasOrderChanges, setHasOrderChanges] = useState<boolean>(false);
@@ -53,71 +62,130 @@ const Personalization: React.FC = () => {
     const [originalIssuers, setOriginalIssuers] = useState<Issuer[]>([]);
     const [hasIssuerChanges, setHasIssuerChanges] = useState<boolean>(false);
 
+    // New state variables for strategies
+    const [strategyItems, setStrategyItems] = useState<StrategyItem[]>([]);
+    const [originalStrategyOrder, setOriginalStrategyOrder] = useState<number[]>([]);
+    const [hasStrategyChanges, setHasStrategyChanges] = useState<boolean>(false);
+
+    // Loading and Error states
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
     const sensors = useSensors(
         useSensor(PointerSensor)
     );
 
+    // Consolidated useEffect for fetching all data
     useEffect(() => {
-        fetch('http://localhost:8000/get-personalization-order')
-            .then(response => response.json())
-            .then((data: number[]) => {
-                setOriginalOrder(data);
+        setIsLoading(true);
+        setError(null);
 
+        // Define all fetch requests
+        const fetchContentOrder = fetch('http://localhost:8000/get-personalization-order')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch personalization order');
+                }
+                return response.json();
+            });
+
+        const fetchIssuers = fetch('http://localhost:8000/get-personalization-issuers')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch personalization issuers');
+                }
+                return response.json();
+            });
+
+        const fetchStrategies = fetch('http://localhost:8000/get-personalization-strategies')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch personalization strategies');
+                }
+                return response.json();
+            });
+
+        // Execute all fetch requests in parallel
+        Promise.all([fetchContentOrder, fetchIssuers, fetchStrategies])
+            .then(([orderData, issuersData, strategiesData]: [number[], Issuer[], number[]]) => {
+                // Handle Content Items
                 const allContentItems: ContentItem[] = [
-                    { id: 1, title: 'RSI', subtitle: 'Relative Strength Index' },
-                    { id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence' },
-                    { id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator' },
-                    { id: 4, title: 'CCI', subtitle: 'Commodity Channel Index' },
-                    { id: 5, title: 'WILLR', subtitle: 'Williams %R' },
-                    { id: 6, title: 'SMA', subtitle: 'Simple Moving Average' },
-                    { id: 7, title: 'EMA', subtitle: 'Exponential Moving Average' },
-                    { id: 8, title: 'WMA', subtitle: 'Weighted Moving Average' },
-                    { id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands' },
-                    { id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average' },
-                    { id: 11, title: 'Historical Data', subtitle: 'View Historical Data' },
+                    {id: 1, title: 'SMA', subtitle: 'Simple Moving Average', category: 'Moving Average'},
+                    {id: 2, title: 'EMA', subtitle: 'Exponential Moving Average', category: 'Moving Average'},
+                    {id: 3, title: 'RMA', subtitle: 'Rolling Moving Average', category: 'Moving Average'},
+                    {id: 4, title: 'DEMA', subtitle: 'Double Exponential Moving Average', category: 'Moving Average'},
+                    {id: 5, title: 'TRIMA', subtitle: 'Triangular Moving Average', category: 'Moving Average'},
+                    {id: 6, title: 'RSI', subtitle: 'Relative Strength Index', category: 'Oscillator'},
+                    {id: 7, title: 'TRIX', subtitle: 'Triple Exponential Average', category: 'Oscillator'},
+                    {id: 8, title: 'STOCH', subtitle: 'Stochastic Oscillator', category: 'Oscillator'},
+                    {id: 9, title: 'CCI', subtitle: 'Commodity Channel Index', category: 'Oscillator'},
+                    {id: 10, title: 'WILLR', subtitle: 'Williams %R', category: 'Oscillator'},
+                    {id: 11, title: 'Historical Data', subtitle: 'View Historical Data', category: 'External'},
                 ];
 
-                const orderedItems = data
+                const orderedContentItems = orderData
                     .map(id => allContentItems.find(item => item.id === id))
                     .filter(item => item !== undefined) as ContentItem[];
-                setContentItems(orderedItems);
-            })
-            .catch(error => {
-                console.error('Error fetching content order:', error);
-                const defaultOrder: ContentItem[] = [
-                    { id: 1, title: 'RSI', subtitle: 'Relative Strength Index' },
-                    { id: 2, title: 'MACD', subtitle: 'Moving Average Convergence Divergence' },
-                    { id: 3, title: 'STOCH', subtitle: 'Stochastic Oscillator' },
-                    { id: 4, title: 'CCI', subtitle: 'Commodity Channel Index' },
-                    { id: 5, title: 'WILLR', subtitle: 'Williams %R' },
-                    { id: 6, title: 'SMA', subtitle: 'Simple Moving Average' },
-                    { id: 7, title: 'EMA', subtitle: 'Exponential Moving Average' },
-                    { id: 8, title: 'WMA', subtitle: 'Weighted Moving Average' },
-                    { id: 9, title: 'BBANDS', subtitle: 'Bollinger Bands' },
-                    { id: 10, title: 'TRIX', subtitle: 'Triple Exponential Moving Average' },
-                    { id: 11, title: 'Historical Data', subtitle: 'View Historical Data' },
-                ];
-                setContentItems(defaultOrder);
-                setOriginalOrder(defaultOrder.map(item => item.id));
-            });
-    }, []);
+                setContentItems(orderedContentItems);
+                setOriginalOrder(orderData);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/get-personalization-issuers')
-            .then(response => response.json())
-            .then((data: Issuer[]) => {
-                setIssuers(data);
-                setOriginalIssuers(data.map(issuer => ({ ...issuer })));
+                // Handle Issuers
+                setIssuers(issuersData);
+                setOriginalIssuers(issuersData.map(issuer => ({...issuer})));
+
+                // Handle Strategies
+                const allStrategyItems: StrategyItem[] = [
+                    {id: 101, name: 'RSI2', description: 'Relative Strength Index'},
+                    {id: 102, name: 'BBANDS', description: 'Bollinger Bands'},
+                    {id: 103, name: 'WILLR', description: 'Williams %R'},
+                    {id: 104, name: 'VWMA', description: 'Volume Weighted Moving Average'},
+                    {id: 105, name: 'PSAR', description: 'Parabolic Stop-and-Reverse'},
+                ];
+
+                const orderedStrategies = strategiesData
+                    .map(id => allStrategyItems.find(item => item.id === id))
+                    .filter(item => item !== undefined) as StrategyItem[];
+                setStrategyItems(orderedStrategies);
+                setOriginalStrategyOrder(strategiesData);
+
+                setIsLoading(false);
             })
-            .catch(error => {
-                console.error('Error fetching issuers:', error);
+            .catch((err: Error) => {
+                console.error('Error fetching personalization data:', err);
+                setError(err.message);
+                // Optionally, set default data in case of error
+                const defaultContentOrder: ContentItem[] = [
+                    {id: 1, title: 'SMA', subtitle: 'Simple Moving Average', category: 'Moving Average'},
+                    {id: 2, title: 'EMA', subtitle: 'Exponential Moving Average', category: 'Moving Average'},
+                    {id: 3, title: 'RMA', subtitle: 'Rolling Moving Average', category: 'Moving Average'},
+                    {id: 4, title: 'DEMA', subtitle: 'Double Exponential Moving Average', category: 'Moving Average'},
+                    {id: 5, title: 'TRIMA', subtitle: 'Triangular Moving Average', category: 'Moving Average'},
+                    {id: 6, title: 'RSI', subtitle: 'Relative Strength Index', category: 'Oscillator'},
+                    {id: 7, title: 'TRIX', subtitle: 'Triple Exponential Average', category: 'Oscillator'},
+                    {id: 8, title: 'STOCH', subtitle: 'Stochastic Oscillator', category: 'Oscillator'},
+                    {id: 9, title: 'CCI', subtitle: 'Commodity Channel Index', category: 'Oscillator'},
+                    {id: 10, title: 'WILLR', subtitle: 'Williams %R', category: 'Oscillator'},
+                    {id: 11, title: 'Historical Data', subtitle: 'View Historical Data on the Macedonian Stock Exchange Website', category: 'External'},
+                ];
+                const defaultStrategies: StrategyItem[] = [
+                    {id: 101, name: 'RSI2', description: 'Relative Strength Index'},
+                    {id: 102, name: 'BBANDS', description: 'Bollinger Bands'},
+                    {id: 103, name: 'WILLR', description: 'Williams %R'},
+                    {id: 104, name: 'VWMA', description: 'Volume Weighted Moving Average'},
+                    {id: 105, name: 'PSAR', description: 'Parabolic Stop-and-Reverse'},
+                ];
+                setContentItems(defaultContentOrder);
+                setOriginalOrder(defaultContentOrder.map(item => item.id));
                 setIssuers([]);
                 setOriginalIssuers([]);
+                setStrategyItems(defaultStrategies);
+                setOriginalStrategyOrder(defaultStrategies.map(item => item.id));
+                setIsLoading(false);
             });
     }, []);
 
     const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
+        const {active, over} = event;
 
         if (over && active.id !== over.id) {
             const oldIndex = contentItems.findIndex(item => item.id === active.id);
@@ -132,6 +200,22 @@ const Personalization: React.FC = () => {
         }
     };
 
+    const handleStrategyDragEnd = (event: DragEndEvent) => {
+        const {active, over} = event;
+
+        if (over && active.id !== over.id) {
+            const oldIndex = strategyItems.findIndex(item => item.id === active.id);
+            const newIndex = strategyItems.findIndex(item => item.id === over.id);
+
+            const newOrder = arrayMove(strategyItems, oldIndex, newIndex);
+            setStrategyItems(newOrder);
+
+            const newOrderIds = newOrder.map(item => item.id);
+            const isDifferent = !arraysEqual(newOrderIds, originalStrategyOrder);
+            setHasStrategyChanges(isDifferent);
+        }
+    };
+
     const arraysEqual = (a: number[], b: number[]) => {
         if (a.length !== b.length) return false;
         for (let i = 0; i < a.length; i++) {
@@ -141,6 +225,9 @@ const Personalization: React.FC = () => {
     };
 
     const handleSaveChanges = () => {
+        setIsLoading(true);
+        setError(null);
+
         const promises = [];
 
         if (hasOrderChanges) {
@@ -150,7 +237,7 @@ const Personalization: React.FC = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ order_list: newOrderIds }),
+                body: JSON.stringify({order_list: newOrderIds}),
             })
                 .then(response => {
                     if (response.ok) {
@@ -177,7 +264,7 @@ const Personalization: React.FC = () => {
                 .then(response => {
                     if (response.ok) {
                         console.log('Issuers saved successfully');
-                        setOriginalIssuers(issuers.map(issuer => ({ ...issuer })));
+                        setOriginalIssuers(issuers.map(issuer => ({...issuer})));
                         setHasIssuerChanges(false);
                     } else {
                         return response.json().then(data => {
@@ -188,20 +275,45 @@ const Personalization: React.FC = () => {
             promises.push(issuerPromise);
         }
 
+        if (hasStrategyChanges) {
+            const newStrategyOrderIds = strategyItems.map(item => item.id);
+            const strategyPromise = fetch('http://localhost:8000/update-personalization-strategies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({strategies_order_list: newStrategyOrderIds}), // Corrected field name
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Strategies saved successfully');
+                        setOriginalStrategyOrder(newStrategyOrderIds);
+                        setHasStrategyChanges(false);
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(`Failed to save strategies: ${data.detail}`);
+                        });
+                    }
+                });
+            promises.push(strategyPromise);
+        }
+
         Promise.all(promises)
             .then(() => {
-                alert('Changes saved successfully!');
+                console.log('Changes saved successfully!');
             })
             .catch(error => {
                 console.error(error.message);
-                alert(error.message);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const toggleWatchStatus = (symbol: string) => {
         const updatedIssuers = issuers.map(issuer => {
             if (issuer.symbol === symbol) {
-                return { ...issuer, is_watched: !issuer.is_watched };
+                return {...issuer, is_watched: !issuer.is_watched};
             }
             return issuer;
         });
@@ -211,6 +323,28 @@ const Personalization: React.FC = () => {
         setHasIssuerChanges(isDifferent);
     };
 
+    if (isLoading) {
+        return (
+            <div className="loading-overlay-back-drop">
+                <div className="loading-overlay-content">
+                    <div className="loading-overlay-spinner-container">
+                        <div className="loading-overlay-spinner"/>
+                    </div>
+                    <div className="loading-overlay-text-container">Loading...</div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="error-message">
+                <p>Error: {error}</p>
+                <button onClick={() => window.location.reload()} className="retry-button">Retry</button>
+            </div>
+        );
+    }
+
     return (
         <div className="content-container">
             <div className="page-title">
@@ -218,38 +352,52 @@ const Personalization: React.FC = () => {
                     <h1>Personalization</h1>
                     <button
                         onClick={handleSaveChanges}
-                        disabled={!hasOrderChanges && !hasIssuerChanges}
-                        className={`save-button ${hasOrderChanges || hasIssuerChanges ? 'enabled' : 'disabled'}`}
+                        disabled={!hasOrderChanges && !hasIssuerChanges && !hasStrategyChanges || isLoading}
+                        className={`save-button ${(hasOrderChanges || hasIssuerChanges || hasStrategyChanges) ? 'enabled' : 'disabled'}`}
                     >
-                    <span className="button-content">
-                        <img alt="Save icon" className="button-icon" src="/save-icon.svg" />
-                        Save Changes
-                    </span>
+                        <span className="button-content">
+                            <img alt="Save icon" className="button-icon" src="/save-icon.svg"/>
+                            Save Changes
+                        </span>
                     </button>
                 </div>
+                <div className="page-title-right"></div>
             </div>
             <div className="personalization-page">
                 <div className="issuers-section">
-                    <table className="issuers-table">
-                        <tbody>
-                        {issuers.map((issuer) => (
-                            <tr key={issuer.symbol}>
-                                <td>{issuer.symbol}</td>
-                                <td>
-                                    <img
-                                        alt={issuer.is_watched ? "Watched" : "Unwatched"}
-                                        src={issuer.is_watched ? "/visibility-on-icon.svg" : "/visibility-off-icon.svg"}
-                                        className="watch-status-icon"
-                                        onClick={() => toggleWatchStatus(issuer.symbol)}
-                                        style={{cursor: "pointer"}}
-                                    />
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                    <h2>Watchlist</h2>
+                    <div className="issuers-table-container">
+                        <table className="issuers-table">
+                            <tbody>
+                            {issuers.map((issuer) => (
+                                <tr key={issuer.symbol}>
+                                    <td
+                                        style={{
+                                            color: issuer.is_watched ? "white" : "grey", // Text color based on watch status
+                                        }}
+                                    >
+                                        {issuer.symbol}
+                                    </td>
+                                    <td>
+                                        <img
+                                            alt={issuer.is_watched ? "Watched" : "Unwatched"}
+                                            src={issuer.is_watched ? "/visibility-on-icon.svg" : "/visibility-off-icon.svg"}
+                                            className="watch-status-icon"
+                                            onClick={() => toggleWatchStatus(issuer.symbol)}
+                                            style={{
+                                                cursor: "pointer",
+                                                filter: issuer.is_watched ? "invert(0)" : "invert(0.5)", // Icon fill color based on watch status
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div className="order-section">
+                    <h2>Data Analyses</h2>
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
@@ -261,18 +409,38 @@ const Personalization: React.FC = () => {
                         >
                             <div className="content-list">
                                 {contentItems.map((item) => (
-                                    <SortableItem key={item.id} id={item.id} title={item.title}
+                                    <SortableItem className="content-item" key={item.id} id={item.id} title={item.title}
                                                   subtitle={item.subtitle}/>
                                 ))}
                             </div>
                         </SortableContext>
                     </DndContext>
                 </div>
+                <div className="strategies-section">
+                    <h2>Data Reports</h2>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleStrategyDragEnd}
+                    >
+                        <SortableContext
+                            items={strategyItems.map(item => item.id)}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            <div className="strategy-list">
 
+                                {strategyItems.map((strategy) => (
+                                    <SortableItem className="strategy-item" key={strategy.id} id={strategy.id}
+                                                  title={strategy.name} subtitle={strategy.description}
+                                    />
+                                ))}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                </div>
             </div>
         </div>
     );
-
 };
 
 export default Personalization;
