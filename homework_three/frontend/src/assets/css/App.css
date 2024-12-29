@@ -81,6 +81,15 @@ button:disabled {
     color: grey;
 }
 
+.inactive {
+    background-color: transparent;
+    color: grey;
+}
+
+.inactive img {
+    filter: invert(54%) sepia(0%) saturate(1%) hue-rotate(183deg) brightness(92%) contrast(85%);
+}
+
 .button-content {
     display: flex;
     gap: 3px;
@@ -107,12 +116,13 @@ button:disabled .button-content img {
     border: 30px solid rgba(0, 0, 0, 0%);
     border-right-width: 0;
     padding-right: 30px;
+    overflow-x: hidden;
 }
 
 .page-title {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .page-title-right, .page-title-left {

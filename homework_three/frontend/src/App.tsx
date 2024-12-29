@@ -52,18 +52,6 @@ const App = () => {
                             </li>
                             <li className="nav-bar-top-item">
                                 <NavLink
-                                    to="/personalization"
-                                    className={({isActive}) =>
-                                        `nav-bar-top-item-link ${isActive ? 'active' : ''}`
-                                    }
-                                >
-                                    <img className="nav-bar-top-item-icon" alt="Dashboard icon"
-                                         src="/personalization-icon.svg"/>
-                                    Personalization
-                                </NavLink>
-                            </li>
-                            <li className="nav-bar-top-item">
-                                <NavLink
                                     to="/data-reports"
                                     className={({isActive}) =>
                                         `nav-bar-top-item-link ${isActive ? 'active' : ''}`
@@ -74,7 +62,18 @@ const App = () => {
                                     Data Reports
                                 </NavLink>
                             </li>
-
+                            <li className="nav-bar-top-item">
+                                <NavLink
+                                    to="/personalization"
+                                    className={({isActive}) =>
+                                        `nav-bar-top-item-link ${isActive ? 'active' : ''}`
+                                    }
+                                >
+                                    <img className="nav-bar-top-item-icon" alt="Dashboard icon"
+                                         src="/personalization-icon.svg"/>
+                                    Personalization
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                     <ul className="nav-bar-bottom-list">

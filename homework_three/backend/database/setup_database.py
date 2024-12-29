@@ -30,6 +30,9 @@ def setup_collections():
     if "personalization" not in db.list_collection_names():
         db.create_collection("personalization", capped=False)
 
+    if "personalization_strategies" not in db.list_collection_names():
+        db.create_collection("personalization_strategies", capped=False)
+
 
 def convert_oid(data):
     if isinstance(data, list):
