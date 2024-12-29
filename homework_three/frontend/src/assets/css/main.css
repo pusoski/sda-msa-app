@@ -123,8 +123,8 @@
 
   --off-white-text: #d0cdd1;
 
-  --color-overlay: rgba(18, 18, 18, 0.4);
-  --color-spinner-border: #390942;
+  --color-overlay: rgba(18, 18, 18, 0.6);
+  --color-spinner-border: rgba(173, 52, 183, 0.3);
   --color-spinner-top: #ad34b7;
 
   --blur-filter: 20px;
@@ -168,11 +168,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 35px !important;
+  font-size: 30px !important;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
