@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./assets/css/main.css";
 import "./assets/css/Issuers.css";
+import "./assets/css/Modal.css"
 
 interface Issuer {
     symbol: string;
     is_bond: boolean;
     has_digit: boolean;
     valid: boolean;
-    last_scraped_date: string;
+    last_scraped_date: string | null;
 }
 
 type SortOrder = 'asc' | 'desc';
 
 const Issuers: React.FC = () => {
     const [issuers, setIssuers] = useState<Issuer[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = useState<number | "All">(20);
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -26,6 +30,9 @@ const Issuers: React.FC = () => {
     const [validityFilter, setValidityFilter] = useState<string>("All");
 
     const fetchIssuers = () => {
+        setIsLoading(true);
+        setError(null);
+
         fetch("http://localhost:8000/filter-one-data")
             .then((response) => {
                 if (!response.ok) {
@@ -37,9 +44,12 @@ const Issuers: React.FC = () => {
             })
             .then((data: Issuer[]) => {
                 setIssuers(data);
+                setIsLoading(false);
             })
-            .catch((error: unknown) => {
+            .catch((error) => {
                 console.error("Failed to fetch issuers:", error);
+                setError(error.message || "Failed to fetch issuers.");
+                setIsLoading(false);
             });
     };
 
@@ -58,7 +68,6 @@ const Issuers: React.FC = () => {
     };
 
     const sortedIssuers = React.useMemo(() => {
-        if (sortOrder === null) return issuers;
         return [...issuers].sort((a, b) => {
             if (a.symbol < b.symbol) return sortOrder === 'asc' ? -1 : 1;
             if (a.symbol > b.symbol) return sortOrder === 'asc' ? 1 : -1;
@@ -75,10 +84,10 @@ const Issuers: React.FC = () => {
         return matchesSymbol && matchesValidity;
     });
 
-    const totalPages = rowsPerPage === "All" ? 1 : Math.ceil(filteredIssuers.length / rowsPerPage);
-    const startIndex = (currentPage - 1) * (rowsPerPage === "All" ? filteredIssuers.length : rowsPerPage);
+    const totalPages = rowsPerPage === "All" ? 1 : Math.ceil(filteredIssuers.length / (rowsPerPage as number));
+    const startIndex = (currentPage - 1) * (rowsPerPage === "All" ? filteredIssuers.length : rowsPerPage as number);
     const currentIssuers =
-        rowsPerPage === "All" ? filteredIssuers : filteredIssuers.slice(startIndex, startIndex + rowsPerPage);
+        rowsPerPage === "All" ? filteredIssuers : filteredIssuers.slice(startIndex, startIndex + (rowsPerPage as number));
 
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -107,6 +116,24 @@ const Issuers: React.FC = () => {
         setCurrentPage(1);
     };
 
+    if (isLoading) {
+        return (
+            <div className="loading-overlay-back-drop">
+                <div className="loading-overlay-content">
+                    <div className="loading-overlay-spinner-container">
+                        <div className="loading-overlay-spinner"></div>
+                    </div>
+                    <div className="loading-overlay-text-container">
+                        Loading...
+                    </div>
+                </div>
+            </div>);
+    }
+
+    if (error) {
+        return <div className="error-message">{error}</div>;
+    }
+
     const PaginationControls = () => {
         const totalRows = filteredIssuers.length;
 
@@ -122,7 +149,7 @@ const Issuers: React.FC = () => {
 
         const startRow = startIndex + 1;
         const endRow = Math.min(
-            startIndex + (rowsPerPage === "All" ? filteredIssuers.length : rowsPerPage),
+            startIndex + (rowsPerPage === "All" ? filteredIssuers.length : rowsPerPage as number),
             totalRows
         );
 
@@ -271,9 +298,9 @@ const Issuers: React.FC = () => {
 
             {isModalOpen && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <div className="modal-content-sort-filter">
                         <h2>Sort & Filter Issuers</h2>
-                        <div className="modal-section">
+                        <div className="sort-filter-controls">
                             <h3>Sort by Issuer Symbol</h3>
                             <label>
                                 <input
@@ -296,7 +323,7 @@ const Issuers: React.FC = () => {
                                 Descending
                             </label>
                         </div>
-                        <div className="modal-section">
+                        <div className="sort-filter-controls">
                             <h3>Filter by Validity Status</h3>
                             <label>
                                 <input
@@ -338,7 +365,6 @@ const Issuers: React.FC = () => {
             )}
         </div>
     );
-
 };
 
 export default Issuers;
