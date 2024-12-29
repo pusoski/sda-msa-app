@@ -1,6 +1,16 @@
 .personalization-page {
     display: flex;
-    /*justify-content: space-between;*/
+    justify-content: space-between;
+}
+
+.issuers-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.personalization-page {
+    display: flex;
 }
 
 .issuers-section {
@@ -10,46 +20,59 @@
 }
 
 .order-section {
-    order: 3;
-    width: 90%;
+    order: 2;
+    width: 65%;
     flex: 1;
 }
 
+.strategies-section {
+    order: 3;
+    padding-left: 25px;
+    gap: 16px;
+    width: 25%;
+}
+
 .content-list {
-    padding: 2%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: minmax(100px, auto);
     gap: 16px;
+    height: 500px;
+}
+
+.strategy-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: stretch;
+    gap: 16px;
+    height: 500px;
 }
 
 .content-list-container {
-    max-height: 200px;
     overflow-y: auto;
 }
 
-.content-item {
+.content-item, .strategy-item {
     background-color: #663366;
     color: white;
-    border-radius: 8px;
-    max-width: 40vh;
+    border-radius: var(--border-radius-small);
     overflow: hidden;
     padding: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
 }
 
-.content-item:nth-of-type(4){
+.content-item:nth-of-type(5){
     grid-row: span 2;
 }
 
 .content-item:hover {
-    background-color: #6a006a;
+    background-color: var(--purple-active-tab);
 }
 
 .watch-status-icon{
-    width: 24px;
-    height: 24px;
+    width: 17px;
+    padding-top: 3px;
 }
 
 .content-container{
@@ -57,47 +80,23 @@
     flex-direction: column;
 }
 
-.page-title{
-    display: flex;
-    padding: 10px 20px;
-}
-
-.issuers-table{
-    max-height: 10px;
-    overflow-y: auto;
-}
-
 .issuers-table td {
-    padding: 12px;
+    padding: 5px;
 }
 
+.issuers-table td + td {
+    border-left: none; /* Hides vertical borders */
+}
 
 .issuers-table tr td:last-child {
     width: 48px;
     text-align: center;
 }
 
+h2 {
+    margin-bottom: 15px;
+}
 
-
-
-/*.issuers-table {*/
-/*    border-collapse: collapse; !* Ensures no extra spacing between borders *!*/
-/*    width: 100%; !* Optional for full width *!*/
-/*    border-color: red; !* Adds an outer border to the table *!*/
-/*}*/
-
-/*.issuers-table tr {*/
-/*    border-bottom: 3px red; !* Keeps horizontal lines between rows *!*/
-/*}*/
-
-/*.issuers-table td, .issuers-table th {*/
-/*    border: none; !* Removes all inner borders initially *!*/
-/*}*/
-
-/*.issuers-table td:first-child, .issuers-table th:first-child {*/
-/*    border-left: 3px solid black; !* Adds a left border for the first column *!*/
-/*}*/
-
-/*.issuers-table td:last-child, .issuers-table th:last-child {*/
-/*    border-right: 3px solid black; !* Adds a right border for the last column *!*/
-/*}*/
+.content-subtitle {
+    line-height: 1.5;
+}
