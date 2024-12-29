@@ -1,0 +1,115 @@
+.da-issuers-table-container {
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.data-analyses-page {
+    display: flex;
+}
+
+.da-issuers-section {
+    order: 1;
+    width: 15%;
+    margin-right: 20px;
+}
+
+.da-order-section {
+    order: 2;
+    width: 85%;
+    flex: 1;
+}
+
+.da-content-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 16px;
+    height: 520px;
+}
+
+.da-content-list-container {
+    overflow-y: auto;
+}
+
+.da-content-item {
+    background-color: #663366;
+    color: white;
+    border-radius: var(--border-radius-small);
+    overflow: hidden;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.da-content-item:nth-of-type(5){
+    grid-row: span 2;
+}
+
+.da-content-item:hover {
+    background-color: var(--purple-active-tab);
+}
+
+.da-watch-status-icon{
+    width: 17px;
+    padding-top: 3px;
+}
+
+.da-content-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.da-content-list-container {
+    overflow-y: auto;
+}
+
+.da-issuers-table td {
+    padding: 10px;
+}
+
+.da-issuers-table td + td {
+    border-left: none; /* Hides vertical borders */
+}
+
+.da-issuers-table tr td:last-child {
+    width: 48px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.da-content-subtitle {
+    line-height: 1.5;
+}
+
+.selected {
+    background-color: var(--purple-table-header);
+}
+
+.period-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.period-button img {
+    width: 17px;
+}
+
+.period-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.period-button-inactive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: transparent;
+}
