@@ -1,0 +1,102 @@
+.personalization-page {
+    display: flex;
+    justify-content: space-between;
+}
+
+.issuers-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.personalization-page {
+    display: flex;
+}
+
+.issuers-section {
+    order: 1;
+    width: 15%;
+    margin-right: 20px;
+}
+
+.order-section {
+    order: 2;
+    width: 65%;
+    flex: 1;
+}
+
+.strategies-section {
+    order: 3;
+    padding-left: 25px;
+    gap: 16px;
+    width: 25%;
+}
+
+.content-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 16px;
+    height: 500px;
+}
+
+.strategy-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: stretch;
+    gap: 16px;
+    height: 500px;
+}
+
+.content-list-container {
+    overflow-y: auto;
+}
+
+.content-item, .strategy-item {
+    background-color: #663366;
+    color: white;
+    border-radius: var(--border-radius-small);
+    overflow: hidden;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.content-item:nth-of-type(5){
+    grid-row: span 2;
+}
+
+.content-item:hover {
+    background-color: var(--purple-active-tab);
+}
+
+.watch-status-icon{
+    width: 17px;
+    padding-top: 3px;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.issuers-table td {
+    padding: 5px;
+}
+
+.issuers-table td + td {
+    border-left: none; /* Hides vertical borders */
+}
+
+.issuers-table tr td:last-child {
+    width: 48px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.content-subtitle {
+    line-height: 1.5;
+}

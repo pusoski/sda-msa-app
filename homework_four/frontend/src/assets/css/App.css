@@ -1,0 +1,132 @@
+.nav-bar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 200px;
+    padding-right: 30px;
+    padding-top: 14px;
+}
+
+.nav-bar-logo {
+    width: 120px;
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+
+.nav-bar-top-list, .nav-bar-bottom-list {
+    padding-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nav-bar-top-item, .nav-bar-bottom-item {
+    list-style: none;
+}
+
+.nav-bar-top-item-link, .nav-bar-bottom-item-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background-color: var(--purple-main-background);
+}
+
+.nav-bar-top-item-icon, .nav-bar-bottom-item-icon {
+    width: 23px;
+}
+
+
+.nav-bar-top-item-link.active, .nav-bar-top-item-link:hover {
+    background-color: var(--purple-active-tab);
+    border-radius: var(--border-radius-small);
+}
+
+.nav-bar-top-item-link:hover {
+    transition: background-color var(--transition-speed) ease-in-out;
+}
+
+a {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--color-link-hover);
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+    color: var(--color-text);
+}
+
+button {
+    border-radius: var(--border-radius-small);
+    border: 2px solid var(--purple-button);
+    padding: 8px 17px;
+    margin: 5px;
+    font-weight: var(--font-weight-medium);
+    font-family: inherit;
+    background-color: var(--purple-button);
+    color: white;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+    color: grey;
+}
+
+.inactive {
+    background-color: transparent;
+    color: grey;
+}
+
+.inactive img {
+    filter: invert(54%) sepia(0%) saturate(1%) hue-rotate(183deg) brightness(92%) contrast(85%);
+}
+
+.button-content {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+button:disabled .button-content img {
+    filter: invert(54%) sepia(0%) saturate(1%) hue-rotate(183deg) brightness(92%) contrast(85%);
+}
+
+.button-icon {
+    width: 17px;
+}
+
+.new-tab-icon {
+    width: 12px;
+}
+
+.content-container {
+    width: 100vw;
+    background-color: var(--purple-panel-background);
+    border-radius: var(--border-radius-medium);
+    overflow: auto;
+    border: 30px solid rgba(0, 0, 0, 0%);
+    border-right-width: 0;
+    padding-right: 30px;
+    overflow-x: hidden;
+}
+
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.page-title-right, .page-title-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
